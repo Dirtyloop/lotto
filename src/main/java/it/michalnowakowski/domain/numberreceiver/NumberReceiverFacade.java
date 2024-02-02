@@ -4,11 +4,18 @@ import java.util.Set;
 
 public class NumberReceiverFacade {
 
-    public String inpitNumbers(Set<Integer> numbers) {
-        if(numbers.size() != 6) {
+    public String inputNumbers(Set<Integer> numbersFromUser) {
+        if(!(filterNumbersInRangeAndCount(numbersFromUser) == 6)) {
             return "Fail";
         }
-        return "Succes";
+        return "Success";
+    }
+
+    private long filterNumbersInRangeAndCount(Set<Integer> numbersFromUser) {
+        return numbersFromUser.stream()
+                .filter(num -> num >= 1)
+                .filter(num -> num <= 99)
+                .count();
     }
 
 }

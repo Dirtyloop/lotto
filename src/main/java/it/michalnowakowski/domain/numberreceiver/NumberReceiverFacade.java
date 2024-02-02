@@ -1,5 +1,6 @@
 package it.michalnowakowski.domain.numberreceiver;
 
+import it.michalnowakowski.domain.numberreceiver.dto.InputNumberDto;
 import lombok.AllArgsConstructor;
 
 import java.util.Set;
@@ -9,12 +10,12 @@ public class NumberReceiverFacade {
 
     private final NumberValidator validator;
 
-    public String inputNumbers(Set<Integer> numbersFromUser) {
+    public InputNumberDto inputNumbers(Set<Integer> numbersFromUser) {
 
         boolean areNumbersValidated = validator.areAllNumbersInRange(numbersFromUser);
         if(!areNumbersValidated) {
-            return "Fail";
+            return InputNumberDto.builder().message("Fail").build();
         }
-        return "Success";
+        return InputNumberDto.builder().message("Success").build();
     }
 }

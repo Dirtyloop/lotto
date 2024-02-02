@@ -1,5 +1,6 @@
 package it.michalnowakowski.domain.numberreceiver;
 
+import it.michalnowakowski.domain.numberreceiver.dto.InputNumberDto;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
@@ -15,36 +16,36 @@ class NumberReceiverFacadeTest {
     public void should_succed_when_six_numbers_in_range_received() {
         Set<Integer> numbersFromUser = Set.of(1, 2, 3, 4, 5, 6);
 
-        String result = numberReceiverFacade.inputNumbers(numbersFromUser);
+        InputNumberDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
 
-        assertThat(result).isEqualTo("Success");
+        assertThat(result.message()).isEqualTo("Success");
     }
 
     @Test
     public void should_failed_when_less_than_six_numbers_in_range_received() {
         Set<Integer> numbersFromUser = Set.of(1, 2, 3, 4, 5);
 
-        String result = numberReceiverFacade.inputNumbers(numbersFromUser);
+        InputNumberDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
 
-        assertThat(result).isEqualTo("Fail");
+        assertThat(result.message()).isEqualTo("Fail");
     }
 
     @Test
     public void should_failed_when_more_than_six_numbers_in_range_received() {
         Set<Integer> numbersFromUser = Set.of(1, 2, 3, 4, 5, 6, 7);
 
-        String result = numberReceiverFacade.inputNumbers(numbersFromUser);
+        InputNumberDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
 
-        assertThat(result).isEqualTo("Fail");
+        assertThat(result.message()).isEqualTo("Fail");
     }
 
     @Test
     public void should_failed_when_at_least_one_number_is_out_of_range() {
         Set<Integer> numbersFromUser = Set.of(100, 2, 3, 4, 5, 6);
 
-        String result = numberReceiverFacade.inputNumbers(numbersFromUser);
+        InputNumberDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
 
-        assertThat(result).isEqualTo("Fail");
+        assertThat(result.message()).isEqualTo("Fail");
     }
 
     @Test

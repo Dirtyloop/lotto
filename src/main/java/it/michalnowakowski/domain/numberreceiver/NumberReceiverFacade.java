@@ -10,7 +10,9 @@ public class NumberReceiverFacade {
     private final NumberValidator validator;
 
     public String inputNumbers(Set<Integer> numbersFromUser) {
-        if(!validator.areAllNumbersInRange(numbersFromUser)) {
+
+        boolean areNumbersValidated = validator.areAllNumbersInRange(numbersFromUser);
+        if(!areNumbersValidated) {
             return "Fail";
         }
         return "Success";

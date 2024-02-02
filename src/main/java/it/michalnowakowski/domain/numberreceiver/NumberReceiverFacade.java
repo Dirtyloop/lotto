@@ -1,21 +1,18 @@
 package it.michalnowakowski.domain.numberreceiver;
 
+import lombok.AllArgsConstructor;
+
 import java.util.Set;
 
+@AllArgsConstructor
 public class NumberReceiverFacade {
 
+    private final NumberValidator validator;
+
     public String inputNumbers(Set<Integer> numbersFromUser) {
-        if(!(filterNumbersInRangeAndCount(numbersFromUser) == 6)) {
+        if(!validator.areAllNumbersInRange(numbersFromUser)) {
             return "Fail";
         }
         return "Success";
     }
-
-    private long filterNumbersInRangeAndCount(Set<Integer> numbersFromUser) {
-        return numbersFromUser.stream()
-                .filter(num -> num >= 1)
-                .filter(num -> num <= 99)
-                .count();
-    }
-
 }

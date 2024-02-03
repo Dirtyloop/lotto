@@ -10,6 +10,7 @@ public class InMemoryNumberReceiverRepositoryTestImpl implements NumberReceiverR
     @Override
     public Ticket save(Ticket ticket) {
 
-        return inMemoryDatabase.put(ticket.ticketId(), ticket);
+        inMemoryDatabase.put(ticket.ticketId(), ticket);
+        return ticket;
     }
 }

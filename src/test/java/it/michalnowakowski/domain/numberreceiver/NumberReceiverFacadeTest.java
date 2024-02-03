@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class NumberReceiverFacadeTest {
 
-    NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade(new NumberValidator());
+    NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade(new NumberValidator(), new InMemoryNumberReceiverRepositoryTestImpl());
 
     @Test
     public void should_succed_when_six_numbers_in_range_received() {

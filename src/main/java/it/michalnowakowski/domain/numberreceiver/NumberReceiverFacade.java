@@ -1,9 +1,11 @@
 package it.michalnowakowski.domain.numberreceiver;
 
 import it.michalnowakowski.domain.numberreceiver.dto.InputNumberResultDto;
+import it.michalnowakowski.domain.numberreceiver.dto.TicketDto;
 import lombok.AllArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -27,5 +29,15 @@ public class NumberReceiverFacade {
                 .ticketId(savedTicket.ticketId())
                 .message("Success")
                 .build();
+    }
+
+    public List<TicketDto> userNumbers(LocalDateTime date) {
+        return List.of(
+                TicketDto.builder()
+                        .ticketId("1")
+                        .drawDate(LocalDateTime.now())
+                        .numbersFromUser(Set.of(1,2,3,4,5,6))
+                        .build()
+        );
     }
 }

@@ -15,6 +15,7 @@ public class NumberReceiverFacade {
 
     private final NumberValidator validator;
     private final NumberReceiverRepository repository;
+    private final HashGenerable hashGenerator;
     private final Clock clock;
 
     public InputNumberResultDto inputNumbers(Set<Integer> numbersFromUser) {
@@ -23,12 +24,12 @@ public class NumberReceiverFacade {
         if(!areNumbersValidated) {
             return InputNumberResultDto.builder().message("Fail").build();
         }
-        String ticketId = UUID.randomUUID().toString();
+        String hash = hashGenerator.getHash();
         LocalDateTime drawDate = LocalDateTime.now(clock);
-        Ticket savedTicket = repository.save(new Ticket(ticketId, drawDate, numbersFromUser));
+        Ticket savedTicket = repository.save(new Ticket(hash, drawDate, numbersFromUser));
         return InputNumberResultDto.builder()
                 .drawDate(savedTicket.drawDate())
-                .ticketId(savedTicket.ticketId())
+                .hash(savedTicket.hash())
                 .numbersFromUser(savedTicket.numbersFromUser())
                 .message("Success")
                 .build();

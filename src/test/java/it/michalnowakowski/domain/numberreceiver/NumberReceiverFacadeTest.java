@@ -5,10 +5,8 @@ import it.michalnowakowski.domain.numberreceiver.dto.InputNumberResultDto;
 import it.michalnowakowski.domain.numberreceiver.dto.TicketDto;
 import org.junit.jupiter.api.Test;
 
-import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Set;
 
@@ -37,7 +35,7 @@ class NumberReceiverFacadeTest {
     }
 
     @Test
-    public void should_failed_when_less_than_six_numbers_in_range_received() {
+    public void should_fail_when_less_than_six_numbers_in_range_received() {
         Set<Integer> numbersFromUser = Set.of(1, 2, 3, 4, 5);
 
         InputNumberResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
@@ -46,7 +44,7 @@ class NumberReceiverFacadeTest {
     }
 
     @Test
-    public void should_failed_when_more_than_six_numbers_in_range_received() {
+    public void should_fail_when_more_than_six_numbers_in_range_received() {
         Set<Integer> numbersFromUser = Set.of(1, 2, 3, 4, 5, 6, 7);
 
         InputNumberResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
@@ -55,8 +53,17 @@ class NumberReceiverFacadeTest {
     }
 
     @Test
-    public void should_failed_when_at_least_one_number_is_out_of_range() {
+    public void should_fail_when_at_least_one_number_is_out_of_range() {
         Set<Integer> numbersFromUser = Set.of(100, 2, 3, 4, 5, 6);
+
+        InputNumberResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
+
+        assertThat(result.message()).isEqualTo("Fail");
+    }
+
+    @Test
+    public void should_fail_when_at_least_one_number_is_out_of_range_and_negative() {
+        Set<Integer> numbersFromUser = Set.of(-1, 2, 3, 4, 5, 6);
 
         InputNumberResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
 
@@ -88,6 +95,15 @@ class NumberReceiverFacadeTest {
                         .numbersFromUser(result.numbersFromUser())
                         .build()
         );
+    }
+
+    @Test
+    public void should_return_empty_list_when_database_is_empty() {
+        LocalDateTime drawDate = LocalDateTime.of(2024, 02, 05, 17, 20, 0);
+
+        List<TicketDto> ticketDtos = numberReceiverFacade.userNumbers(drawDate);
+
+        assertThat(ticketDtos).isEmpty();
     }
 
 }

@@ -1,8 +1,11 @@
 package it.michalnowakowski.domain.numberreceiver;
 
 import it.michalnowakowski.domain.numberreceiver.dto.InputNumberResultDto;
+import it.michalnowakowski.domain.numberreceiver.dto.TicketDto;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -10,7 +13,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class NumberReceiverFacadeTest {
 
-    NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade(new NumberValidator(), new InMemoryNumberReceiverRepositoryTestImpl());
+    NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade(
+            new NumberValidator(),
+            new InMemoryNumberReceiverRepositoryTestImpl());
 
     @Test
     public void should_succed_when_six_numbers_in_range_received() {
@@ -56,6 +61,23 @@ class NumberReceiverFacadeTest {
         String expectedMessage = "duplicate element: 2";
 
         assertThat(actualMessage).isEqualTo(expectedMessage);
+    }
+
+    @Test
+    public void should_save_to_database_when_six_numbers_in_range_received() {
+        Set<Integer> numbersFromUser = Set.of(1, 2, 3, 4, 5, 6);
+        InputNumberResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
+        LocalDateTime drawDate = LocalDateTime.now();
+
+        List<TicketDto> ticketDtos = numberReceiverFacade.userNumbers(drawDate);
+
+        assertThat(ticketDtos).contains(
+                TicketDto.builder()
+                        .ticketId(result.ticketId())
+                        .drawDate(drawDate)
+                        .numbersFromUser(result.numbersFromUser())
+                        .build()
+        );
     }
 
 }

@@ -4,6 +4,7 @@ import it.michalnowakowski.domain.numberreceiver.dto.InputNumberResultDto;
 import it.michalnowakowski.domain.numberreceiver.dto.TicketDto;
 import lombok.AllArgsConstructor;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -13,7 +14,8 @@ import java.util.UUID;
 public class NumberReceiverFacade {
 
     private final NumberValidator validator;
-    private NumberReceiverRepository repository;
+    private final NumberReceiverRepository repository;
+    private final Clock clock;
 
     public InputNumberResultDto inputNumbers(Set<Integer> numbersFromUser) {
 
@@ -22,7 +24,7 @@ public class NumberReceiverFacade {
             return InputNumberResultDto.builder().message("Fail").build();
         }
         String ticketId = UUID.randomUUID().toString();
-        LocalDateTime drawDate = LocalDateTime.now();
+        LocalDateTime drawDate = LocalDateTime.now(clock);
         Ticket savedTicket = repository.save(new Ticket(ticketId, drawDate, numbersFromUser));
         return InputNumberResultDto.builder()
                 .drawDate(savedTicket.drawDate())
@@ -34,6 +36,8 @@ public class NumberReceiverFacade {
 
     public List<TicketDto> userNumbers(LocalDateTime date) {
         List<Ticket> allTicketsByDrawDate = repository.findAllTicketsByDrawDate(date);
-        return allTicketsByDrawDate;
+        return allTicketsByDrawDate.stream()
+                .map(TicketMapper::mapFromTicket)
+                .toList();
     }
 }

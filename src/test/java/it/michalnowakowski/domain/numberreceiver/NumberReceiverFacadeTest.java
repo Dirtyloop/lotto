@@ -4,7 +4,10 @@ import it.michalnowakowski.domain.numberreceiver.dto.InputNumberResultDto;
 import it.michalnowakowski.domain.numberreceiver.dto.TicketDto;
 import org.junit.jupiter.api.Test;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Set;
 
@@ -15,7 +18,11 @@ class NumberReceiverFacadeTest {
 
     NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade(
             new NumberValidator(),
-            new InMemoryNumberReceiverRepositoryTestImpl());
+            new InMemoryNumberReceiverRepositoryTestImpl(),
+            Clock.fixed(LocalDateTime.of(2024, 02, 05, 17, 20, 0)
+                    .toInstant(ZoneId.systemDefault().getRules().getOffset(LocalDateTime.now())),
+                    ZoneId.systemDefault())
+    );
 
     @Test
     public void should_succed_when_six_numbers_in_range_received() {
@@ -67,7 +74,7 @@ class NumberReceiverFacadeTest {
     public void should_save_to_database_when_six_numbers_in_range_received() {
         Set<Integer> numbersFromUser = Set.of(1, 2, 3, 4, 5, 6);
         InputNumberResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
-        LocalDateTime drawDate = LocalDateTime.now();
+        LocalDateTime drawDate = LocalDateTime.of(2024, 02, 05, 17, 20, 0);
 
         List<TicketDto> ticketDtos = numberReceiverFacade.userNumbers(drawDate);
 

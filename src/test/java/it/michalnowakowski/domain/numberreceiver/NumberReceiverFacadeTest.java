@@ -1,5 +1,6 @@
 package it.michalnowakowski.domain.numberreceiver;
 
+import it.michalnowakowski.domain.AdjustableClock;
 import it.michalnowakowski.domain.numberreceiver.dto.InputNumberResultDto;
 import it.michalnowakowski.domain.numberreceiver.dto.TicketDto;
 import org.junit.jupiter.api.Test;
@@ -16,12 +17,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class NumberReceiverFacadeTest {
 
+    AdjustableClock clock = new AdjustableClock(LocalDateTime.of(2024, 02, 05, 17, 20, 0)
+            .toInstant(ZoneId.systemDefault().getRules().getOffset(LocalDateTime.now())),
+            ZoneId.systemDefault());
+
     NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade(
             new NumberValidator(),
             new InMemoryNumberReceiverRepositoryTestImpl(),
-            Clock.fixed(LocalDateTime.of(2024, 02, 05, 17, 20, 0)
-                    .toInstant(ZoneId.systemDefault().getRules().getOffset(LocalDateTime.now())),
-                    ZoneId.systemDefault())
+            clock
     );
 
     @Test

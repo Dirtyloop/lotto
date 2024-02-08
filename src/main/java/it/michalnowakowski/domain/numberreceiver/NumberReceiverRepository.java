@@ -7,4 +7,6 @@ public interface NumberReceiverRepository {
     Ticket save(Ticket ticket);
 
     List<Ticket> findAllTicketsByDrawDate(LocalDateTime drawDate);
+
+    Ticket findByHash(String hash);
 }

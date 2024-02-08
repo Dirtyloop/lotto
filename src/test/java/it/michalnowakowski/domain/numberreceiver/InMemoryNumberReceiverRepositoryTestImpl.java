@@ -22,4 +22,11 @@ public class InMemoryNumberReceiverRepositoryTestImpl implements NumberReceiverR
                 .filter(ticket -> ticket.drawDate().equals(date))
                 .toList();
     }
+
+    @Override
+    public Ticket findByHash(String hash) {
+        return inMemoryDatabase.get(hash);
+    }
+
+
 }

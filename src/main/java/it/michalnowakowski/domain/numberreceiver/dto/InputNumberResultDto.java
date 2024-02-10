@@ -2,9 +2,6 @@ package it.michalnowakowski.domain.numberreceiver.dto;
 
 import lombok.Builder;
 
-import java.time.LocalDateTime;
-import java.util.Set;
-
 @Builder
-public record InputNumberResultDto(String message, LocalDateTime drawDate, String hash, Set<Integer> numbersFromUser) {
+public record InputNumberResultDto(TicketDto ticketDto, String message) {
 }

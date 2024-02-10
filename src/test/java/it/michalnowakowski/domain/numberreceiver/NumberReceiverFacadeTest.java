@@ -114,9 +114,9 @@ class NumberReceiverFacadeTest {
 
         assertThat(ticketDtos).contains(
                 TicketDto.builder()
-                        .hash(result.hash())
-                        .drawDate(drawDate)
-                        .numbersFromUser(result.numbersFromUser())
+                        .hash(result.ticketDto().hash())
+                        .drawDate(result.ticketDto().drawDate())
+                        .numbersFromUser(result.ticketDto().numbersFromUser())
                         .build()
         );
     }
@@ -143,6 +143,6 @@ class NumberReceiverFacadeTest {
 
         InputNumberResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
 
-        assertThat(result.hash()).isEqualTo("hash123");
+        assertThat(result.ticketDto().hash()).isEqualTo("hash123");
     }
 }

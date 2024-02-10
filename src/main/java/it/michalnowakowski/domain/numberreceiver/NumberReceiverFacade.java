@@ -35,9 +35,11 @@ public class NumberReceiverFacade {
         repository.save(savedTicket);
 
         return InputNumberResultDto.builder()
-                .drawDate(savedTicket.drawDate())
-                .hash(savedTicket.hash())
-                .numbersFromUser(savedTicket.numbersFromUser())
+                .ticketDto(TicketDto.builder()
+                        .drawDate(savedTicket.drawDate())
+                        .hash(savedTicket.hash())
+                        .numbersFromUser(savedTicket.numbersFromUser())
+                        .build())
                 .message("Success")
                 .build();
     }

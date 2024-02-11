@@ -25,14 +25,22 @@ class NumberReceiverFacadeTest {
 
     @Test
     public void should_succed_when_six_numbers_in_range_received() {
-        HashGenerable hashGenerator = new HashGenerator();
+        HashGenerable hashGenerator = new HashGeneratorTestImpl();
         DrawDateGenerator drawDateGenerator = new DrawDateGenerator(clock);
         NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade(numberValidator, repository, drawDateGenerator, hashGenerator);
         Set<Integer> numbersFromUser = Set.of(1, 2, 3, 4, 5, 6);
+        LocalDateTime nextDrawDate = drawDateGenerator.getNextDrawDate();
+
+        TicketDto generatedTicket = TicketDto.builder()
+                .hash(hashGenerator.getHash())
+                .numbersFromUser(numbersFromUser)
+                .drawDate(nextDrawDate)
+                .build();
 
         InputNumberResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
 
-        assertThat(result.message()).isEqualTo("Success");
+        InputNumberResultDto expected = new InputNumberResultDto(generatedTicket, ValidationResult.INPUT_SUCCESS.info);
+        assertThat(result).isEqualTo(expected);
     }
 
     @Test
@@ -44,7 +52,8 @@ class NumberReceiverFacadeTest {
 
         InputNumberResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
 
-        assertThat(result.message()).isEqualTo("Fail");
+        InputNumberResultDto expected = new InputNumberResultDto(null, ValidationResult.NOT_SIX_NUMBERS.info);
+        assertThat(result).isEqualTo(expected);
     }
 
     @Test
@@ -57,7 +66,8 @@ class NumberReceiverFacadeTest {
 
         InputNumberResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
 
-        assertThat(result.message()).isEqualTo("Fail");
+        InputNumberResultDto expected = new InputNumberResultDto(null, ValidationResult.NOT_SIX_NUMBERS.info);
+        assertThat(result).isEqualTo(expected);
     }
 
     @Test
@@ -70,7 +80,8 @@ class NumberReceiverFacadeTest {
 
         InputNumberResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
 
-        assertThat(result.message()).isEqualTo("Fail");
+        InputNumberResultDto expected = new InputNumberResultDto(null, ValidationResult.NOT_IN_RANGE.info);
+        assertThat(result).isEqualTo(expected);
     }
 
     @Test
@@ -83,7 +94,8 @@ class NumberReceiverFacadeTest {
 
         InputNumberResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
 
-        assertThat(result.message()).isEqualTo("Fail");
+        InputNumberResultDto expected = new InputNumberResultDto(null, ValidationResult.NOT_IN_RANGE.info);
+        assertThat(result).isEqualTo(expected);
     }
 
     @Test

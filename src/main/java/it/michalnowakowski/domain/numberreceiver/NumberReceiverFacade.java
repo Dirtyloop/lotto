@@ -36,14 +36,9 @@ public class NumberReceiverFacade {
 
         repository.save(savedTicket);
 
-        return InputNumberResultDto.builder()
-                .ticketDto(TicketDto.builder()
-                        .drawDate(savedTicket.drawDate())
-                        .hash(savedTicket.hash())
-                        .numbersFromUser(savedTicket.numbersFromUser())
-                        .build())
-                .message("Success")
-                .build();
+        TicketDto mappedTicket = TicketMapper.mapFromTicket(savedTicket);
+
+        return new InputNumberResultDto(mappedTicket, ValidationResult.INPUT_SUCCESS.info);
     }
 
     public List<TicketDto> retriveAllTicketsByNextDrawDate() {

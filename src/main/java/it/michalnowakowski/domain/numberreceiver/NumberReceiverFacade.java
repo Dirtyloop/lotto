@@ -19,10 +19,12 @@ public class NumberReceiverFacade {
 
     public InputNumberResultDto inputNumbers(Set<Integer> numbersFromUser) {
 
-        boolean areNumbersValidated = validator.areAllNumbersInRange(numbersFromUser);
-        if(!areNumbersValidated) {
-            return InputNumberResultDto.builder().message("Fail").build();
+        List<ValidationResult> validationResultList = validator.validate(numbersFromUser);
+        if(!validationResultList.isEmpty()) {
+            String resultMessage = validator.createResultMessage();
+            return  new InputNumberResultDto(null, resultMessage);
         }
+
         String hash = hashGenerator.getHash();
         LocalDateTime drawDate = drawDateGenerator.getNextDrawDate();
 

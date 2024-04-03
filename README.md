@@ -1,4 +1,4 @@
-# Lotto Java Project
+# LottoGame Java Project
 
 ### About
 

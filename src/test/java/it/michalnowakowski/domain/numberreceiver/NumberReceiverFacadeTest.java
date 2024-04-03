@@ -166,9 +166,9 @@ class NumberReceiverFacadeTest {
     public void should_return_correct_draw_date() {
         HashGenerable hashGenerator = new HashGenerator();
         NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration().createForTest(hashGenerator, clock, repository);
-        Set<Integer> numbersFronUser = Set.of(1, 2, 3, 4, 5, 6);
+        Set<Integer> numbersFromUser = Set.of(1, 2, 3, 4, 5, 6);
 
-        LocalDateTime testDrawDate = numberReceiverFacade.inputNumbers(numbersFronUser).ticketDto().drawDate();
+        LocalDateTime testDrawDate = numberReceiverFacade.inputNumbers(numbersFromUser).ticketDto().drawDate();
 
         LocalDateTime expectedDrawDate = LocalDateTime.of(2024,04, 06, 12, 0, 0);
         assertThat(testDrawDate).isEqualTo(expectedDrawDate);
@@ -219,5 +219,16 @@ class NumberReceiverFacadeTest {
         List<TicketDto> ticketsDtos = numberReceiverFacade.retriveAllTicketsByNextDrawDate(drawDate);
 
         assertThat(ticketsDtos).containsOnly(ticketDto1, ticketDto2);
+    }
+
+    @Test
+    public void should_retrive_correct_next_draw_date() {
+        HashGenerable hashGenerator = new HashGenerator();
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration().createForTest(hashGenerator, clock, repository);
+
+        LocalDateTime testDrawDate = numberReceiverFacade.retriveNextDrawDate();
+
+        LocalDateTime expectedDrawDate = LocalDateTime.of(2024,04, 06, 12, 0, 0);
+        assertThat(testDrawDate).isEqualTo(expectedDrawDate);
     }
 }

@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class NumberReceiverFacadeTest {
 
-    AdjustableClock clock = new AdjustableClock(LocalDateTime.of(2024, 02, 10, 11, 0, 0)
+    AdjustableClock clock = new AdjustableClock(LocalDateTime.of(2024, 04, 06, 11, 0, 0)
             .toInstant(ZoneId.systemDefault().getRules().getOffset(LocalDateTime.now())),
             ZoneId.systemDefault());
 
@@ -131,7 +131,7 @@ class NumberReceiverFacadeTest {
     public void should_return_empty_list_when_database_is_empty() {
         HashGenerable hashGenerator = new HashGenerator();
         NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration().createForTest(hashGenerator, clock, repository);
-        LocalDateTime drawDate = LocalDateTime.of(2024, 02, 10, 12, 0, 0);
+        LocalDateTime drawDate = LocalDateTime.of(2024, 04, 06, 12, 0, 0);
 
         List<TicketDto> ticketDtos = numberReceiverFacade.retriveAllTicketsByNextDrawDate(drawDate);
 
@@ -170,7 +170,7 @@ class NumberReceiverFacadeTest {
 
         LocalDateTime testDrawDate = numberReceiverFacade.inputNumbers(numbersFronUser).ticketDto().drawDate();
 
-        LocalDateTime expectedDrawDate = LocalDateTime.of(2024,02, 10, 12, 0, 0);
+        LocalDateTime expectedDrawDate = LocalDateTime.of(2024,04, 06, 12, 0, 0);
         assertThat(testDrawDate).isEqualTo(expectedDrawDate);
     }
 
@@ -183,7 +183,7 @@ class NumberReceiverFacadeTest {
 
         LocalDateTime testDrawDate = numberReceiverFacade.inputNumbers(numbersFromUser).ticketDto().drawDate();
 
-        LocalDateTime expectedDrawDate = LocalDateTime.of(2024,02, 17, 12, 0, 0);
+        LocalDateTime expectedDrawDate = LocalDateTime.of(2024,04, 13, 12, 0, 0);
         assertThat(testDrawDate).isEqualTo(expectedDrawDate);
     }
 
@@ -196,7 +196,7 @@ class NumberReceiverFacadeTest {
 
         LocalDateTime testDrawDate = numberReceiverFacade.inputNumbers(numbersFromUser).ticketDto().drawDate();
 
-        LocalDateTime expectedDrawDate = LocalDateTime.of(2024,02, 17, 12, 0, 0);
+        LocalDateTime expectedDrawDate = LocalDateTime.of(2024,04, 13, 12, 0, 0);
         assertThat(testDrawDate).isEqualTo(expectedDrawDate);
     }
 
@@ -214,7 +214,7 @@ class NumberReceiverFacadeTest {
         InputNumberResultDto result4 = numberReceiverFacade.inputNumbers(numberFromUser);
         TicketDto ticketDto1 = result1.ticketDto();
         TicketDto ticketDto2 = result2.ticketDto();
-        LocalDateTime drawDate = LocalDateTime.of(2024, 02, 10, 12, 0, 0);
+        LocalDateTime drawDate = LocalDateTime.of(2024, 04, 06, 12, 0, 0);
 
         List<TicketDto> ticketsDtos = numberReceiverFacade.retriveAllTicketsByNextDrawDate(drawDate);
 

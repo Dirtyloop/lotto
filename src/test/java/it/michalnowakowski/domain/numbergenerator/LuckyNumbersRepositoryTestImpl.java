@@ -10,16 +10,17 @@ public class LuckyNumbersRepositoryTestImpl implements LuckyNumbersRepository {
     private final Map<LocalDateTime, LuckyNumbers> luckyNumbersMap = new ConcurrentHashMap<>();
     @Override
     public Optional<LuckyNumbers> findNumbersByDate(LocalDateTime date) {
-        return Optional.empty();
+        return Optional.ofNullable(luckyNumbersMap.get(date));
     }
 
     @Override
     public boolean existsByDate(LocalDateTime nextDrawDate) {
-        return false;
+        luckyNumbersMap.get(nextDrawDate);
+        return true;
     }
 
     @Override
     public LuckyNumbers save(LuckyNumbers luckyNumbers) {
-        return null;
+        return luckyNumbersMap.put(luckyNumbers.date(), luckyNumbers);
     }
 }

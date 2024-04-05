@@ -1,5 +1,6 @@
 package it.michalnowakowski.domain.numbergenerator;
 
+import java.util.HashSet;
 import java.util.Set;
 import it.michalnowakowski.domain.numbergenerator.dto.LuckyNumbersDto;
 import it.michalnowakowski.domain.numberreceiver.NumberReceiverFacade;
@@ -51,6 +52,18 @@ class LuckyNumbersGeneratorFacadeTest {
         LuckyNumberGeneratorFacade numbersGenerator = new NumbersGeneratorConfiguration().createForTest(numberReceiverFacade, generator, luckyNumbersRepository);
 
         assertThrows(IllegalStateException.class, numbersGenerator::generateLuckyNumbers, "One or more numbers is out of range.");
+    }
+
+    @Test
+    public void should_return_unique_numbers() {
+        RandomNumbersGenerable generator = new RandomGenerator();
+        when(numberReceiverFacade.retriveNextDrawDate()).thenReturn(LocalDateTime.now());
+        LuckyNumberGeneratorFacade numbersGenerator = new NumbersGeneratorConfiguration().createForTest(numberReceiverFacade, generator, luckyNumbersRepository);
+
+        LuckyNumbersDto generatedNumbers = numbersGenerator.generateLuckyNumbers();
+
+        int generatedNumbersSize = new HashSet<>(generatedNumbers.getLuckyNumbers()).size();
+        assertThat(generatedNumbersSize).isEqualTo(6);
     }
 
 }

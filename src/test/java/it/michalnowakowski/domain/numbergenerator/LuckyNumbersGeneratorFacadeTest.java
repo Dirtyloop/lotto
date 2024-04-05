@@ -7,6 +7,7 @@ import it.michalnowakowski.domain.numberreceiver.NumberReceiverFacade;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -64,6 +65,30 @@ class LuckyNumbersGeneratorFacadeTest {
 
         int generatedNumbersSize = new HashSet<>(generatedNumbers.getLuckyNumbers()).size();
         assertThat(generatedNumbersSize).isEqualTo(6);
+    }
+
+    @Test
+    public void should_return_lucky_numbers_by_given_date() {
+        LocalDateTime drawDate = LocalDateTime.of(2024, 4, 6, 12, 0, 0);
+        Set<Integer> generatedLuckyNumbers = Set.of(1, 2, 3, 4, 5, 6);
+        String id = UUID.randomUUID().toString();
+        LuckyNumbers luckyNumbers = LuckyNumbers.builder()
+                .id(id)
+                .date(drawDate)
+                .luckyNumbers(generatedLuckyNumbers)
+                .build();
+        luckyNumbersRepository.save(luckyNumbers);
+        RandomNumbersGenerable generator = new LuckyNumbersGeneratorTestImpl();
+        when(numberReceiverFacade.retriveNextDrawDate()).thenReturn(drawDate);
+        LuckyNumberGeneratorFacade numberGenerator = new NumbersGeneratorConfiguration().createForTest(numberReceiverFacade, generator, luckyNumbersRepository);
+
+        LuckyNumbersDto luckyNumbersDto = numberGenerator.retriveLuckyNumbersByDate(drawDate);
+
+        LuckyNumbersDto expectedLuckyNumbersDto = LuckyNumbersDto.builder()
+                .date(drawDate)
+                .luckyNumbers(generatedLuckyNumbers)
+                .build();
+        assertThat(expectedLuckyNumbersDto).isEqualTo(luckyNumbersDto);
     }
 
 }

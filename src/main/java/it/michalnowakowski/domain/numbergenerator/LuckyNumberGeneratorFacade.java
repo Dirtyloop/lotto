@@ -5,6 +5,7 @@ import it.michalnowakowski.domain.numberreceiver.NumberReceiverFacade;
 import lombok.AllArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -26,5 +27,15 @@ public class LuckyNumberGeneratorFacade {
         return LuckyNumbersDto.builder()
                 .luckyNumbers(luckyNumbers)
                 .build();
+    }
+
+    public LuckyNumbersDto retriveLuckyNumbersByDate(LocalDateTime date) {
+        LuckyNumbers numbersByDate = luckyNumbersRepository.findNumbersByDate(date)
+                .orElseThrow(() -> new RuntimeException("Lucky Numbers Not Found."));
+        return LuckyNumbersDto.builder()
+                .luckyNumbers(numbersByDate.luckyNumbers())
+                .date(numbersByDate.date())
+                .build();
+
     }
 }

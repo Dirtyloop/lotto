@@ -23,7 +23,7 @@ class LuckyNumbersGeneratorFacadeTest {
     public void should_return_set_of_6_numbers() {
         RandomNumbersGenerable generator = new RandomGenerator();
         when(numberReceiverFacade.retriveNextDrawDate()).thenReturn(LocalDateTime.now());
-        LuckyNumberGeneratorFacade numbersGenerator = new NumbersGeneratorConfiguration().createForTest(numberReceiverFacade, generator, luckyNumbersRepository);
+        LuckyNumbersGeneratorFacade numbersGenerator = new NumbersGeneratorConfiguration().createForTest(numberReceiverFacade, generator, luckyNumbersRepository);
 
         LuckyNumbersDto generatedNumbers = numbersGenerator.generateLuckyNumbers();
 
@@ -34,7 +34,7 @@ class LuckyNumbersGeneratorFacadeTest {
     public void should_return_set_of_numbers_in_required_range() {
         RandomNumbersGenerable generator = new RandomGenerator();
         when(numberReceiverFacade.retriveNextDrawDate()).thenReturn(LocalDateTime.now());
-        LuckyNumberGeneratorFacade numbersGenerator = new NumbersGeneratorConfiguration().createForTest(numberReceiverFacade, generator, luckyNumbersRepository);
+        LuckyNumbersGeneratorFacade numbersGenerator = new NumbersGeneratorConfiguration().createForTest(numberReceiverFacade, generator, luckyNumbersRepository);
 
         LuckyNumbersDto generatedNumbers = numbersGenerator.generateLuckyNumbers();
 
@@ -50,7 +50,7 @@ class LuckyNumbersGeneratorFacadeTest {
         Set<Integer> numbersOutOfRange = Set.of(0, 1, 2, 3, 4, 5);
         RandomNumbersGenerable generator = new LuckyNumbersGeneratorTestImpl(numbersOutOfRange);
         when(numberReceiverFacade.retriveNextDrawDate()).thenReturn(LocalDateTime.now());
-        LuckyNumberGeneratorFacade numbersGenerator = new NumbersGeneratorConfiguration().createForTest(numberReceiverFacade, generator, luckyNumbersRepository);
+        LuckyNumbersGeneratorFacade numbersGenerator = new NumbersGeneratorConfiguration().createForTest(numberReceiverFacade, generator, luckyNumbersRepository);
 
         assertThrows(IllegalStateException.class, numbersGenerator::generateLuckyNumbers, "One or more numbers is out of range.");
     }
@@ -59,7 +59,7 @@ class LuckyNumbersGeneratorFacadeTest {
     public void should_return_unique_numbers() {
         RandomNumbersGenerable generator = new RandomGenerator();
         when(numberReceiverFacade.retriveNextDrawDate()).thenReturn(LocalDateTime.now());
-        LuckyNumberGeneratorFacade numbersGenerator = new NumbersGeneratorConfiguration().createForTest(numberReceiverFacade, generator, luckyNumbersRepository);
+        LuckyNumbersGeneratorFacade numbersGenerator = new NumbersGeneratorConfiguration().createForTest(numberReceiverFacade, generator, luckyNumbersRepository);
 
         LuckyNumbersDto generatedNumbers = numbersGenerator.generateLuckyNumbers();
 
@@ -80,7 +80,7 @@ class LuckyNumbersGeneratorFacadeTest {
         luckyNumbersRepository.save(luckyNumbers);
         RandomNumbersGenerable generator = new LuckyNumbersGeneratorTestImpl();
         when(numberReceiverFacade.retriveNextDrawDate()).thenReturn(drawDate);
-        LuckyNumberGeneratorFacade numberGenerator = new NumbersGeneratorConfiguration().createForTest(numberReceiverFacade, generator, luckyNumbersRepository);
+        LuckyNumbersGeneratorFacade numberGenerator = new NumbersGeneratorConfiguration().createForTest(numberReceiverFacade, generator, luckyNumbersRepository);
 
         LuckyNumbersDto luckyNumbersDto = numberGenerator.retriveLuckyNumbersByDate(drawDate);
 
@@ -91,4 +91,13 @@ class LuckyNumbersGeneratorFacadeTest {
         assertThat(expectedLuckyNumbersDto).isEqualTo(luckyNumbersDto);
     }
 
+    @Test
+    public void should_throw_an_exception_when_can_not_retrive_numbers_by_date() {
+        LocalDateTime drawDate = LocalDateTime.of(2024, 4, 6, 12, 0, 0);
+        RandomNumbersGenerable generator = new LuckyNumbersGeneratorTestImpl();
+        when(numberReceiverFacade.retriveNextDrawDate()).thenReturn(drawDate);
+        LuckyNumbersGeneratorFacade luckyNumbersGeneratorFacade = new NumbersGeneratorConfiguration().createForTest(numberReceiverFacade, generator, luckyNumbersRepository);
+
+        assertThrows(RuntimeException.class, () -> luckyNumbersGeneratorFacade.retriveLuckyNumbersByDate(drawDate), "Lucky Numbers Not Found.");
+    }
 }

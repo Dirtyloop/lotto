@@ -5,11 +5,10 @@ import it.michalnowakowski.domain.numberreceiver.NumberReceiverFacade;
 import lombok.AllArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.Set;
 
 @AllArgsConstructor
-public class LuckyNumberGeneratorFacade {
+public class LuckyNumbersGeneratorFacade {
 
     private final NumberReceiverFacade numberReceiverFacade;
     private final RandomNumbersGenerable luckyNumberGenerator;

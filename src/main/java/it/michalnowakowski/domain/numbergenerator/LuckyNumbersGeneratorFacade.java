@@ -37,4 +37,9 @@ public class LuckyNumbersGeneratorFacade {
                 .build();
 
     }
+
+    public boolean areWinningNumbersGeneratedByDate() {
+        LocalDateTime nextDrawDate = numberReceiverFacade.retriveNextDrawDate();
+        return luckyNumbersRepository.existsByDate(nextDrawDate);
+    }
 }

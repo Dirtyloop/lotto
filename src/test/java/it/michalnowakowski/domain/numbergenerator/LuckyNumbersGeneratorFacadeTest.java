@@ -11,6 +11,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -99,5 +100,25 @@ class LuckyNumbersGeneratorFacadeTest {
         LuckyNumbersGeneratorFacade luckyNumbersGeneratorFacade = new NumbersGeneratorConfiguration().createForTest(numberReceiverFacade, generator, luckyNumbersRepository);
 
         assertThrows(RuntimeException.class, () -> luckyNumbersGeneratorFacade.retriveLuckyNumbersByDate(drawDate), "Lucky Numbers Not Found.");
+    }
+
+    @Test
+    public void should_return_true_if_numbers_are_generated_by_given_date() {
+        LocalDateTime drawDate = LocalDateTime.of(2024, 4, 6, 12, 0, 0);
+        Set<Integer> generatedLuckyNumbers = Set.of(1, 2, 3, 4, 5, 6);
+        String id = UUID.randomUUID().toString();
+        LuckyNumbers luckyNumbers = LuckyNumbers.builder()
+                .id(id)
+                .date(drawDate)
+                .luckyNumbers(generatedLuckyNumbers)
+                .build();
+        luckyNumbersRepository.save(luckyNumbers);
+        RandomNumbersGenerable generator = new LuckyNumbersGeneratorTestImpl();
+        when(numberReceiverFacade.retriveNextDrawDate()).thenReturn(drawDate);
+        LuckyNumbersGeneratorFacade numberGenerator = new NumbersGeneratorConfiguration().createForTest(numberReceiverFacade, generator, luckyNumbersRepository);
+
+        boolean areLuckyNumbersGeneratedByDate = numberGenerator.areWinningNumbersGeneratedByDate();
+
+        assertTrue(areLuckyNumbersGeneratedByDate);
     }
 }

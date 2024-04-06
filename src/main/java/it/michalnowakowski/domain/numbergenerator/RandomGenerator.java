@@ -23,7 +23,7 @@ class RandomGenerator implements RandomNumbersGenerable {
 
     private int generateRandom() {
         Random random = new SecureRandom();
-        return random.nextInt(RANDOM_NUMBER_RANGE);
+        return random.nextInt(RANDOM_NUMBER_RANGE + 1);
     }
 
     private boolean isAmountOfNumbersLowerThanSix(Set<Integer> luckyNumbers) {

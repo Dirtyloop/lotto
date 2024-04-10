@@ -99,7 +99,7 @@ class LuckyNumbersGeneratorFacadeTest {
         when(numberReceiverFacade.retriveNextDrawDate()).thenReturn(drawDate);
         LuckyNumbersGeneratorFacade luckyNumbersGeneratorFacade = new NumbersGeneratorConfiguration().createForTest(numberReceiverFacade, generator, luckyNumbersRepository);
 
-        assertThrows(RuntimeException.class, () -> luckyNumbersGeneratorFacade.retriveLuckyNumbersByDate(drawDate), "Lucky Numbers Not Found.");
+        assertThrows(NumbersNotFoundException.class, () -> luckyNumbersGeneratorFacade.retriveLuckyNumbersByDate(drawDate), "Lucky Numbers Not Found.");
     }
 
     @Test

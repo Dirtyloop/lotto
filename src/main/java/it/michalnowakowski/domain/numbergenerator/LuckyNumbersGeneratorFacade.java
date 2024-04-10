@@ -30,7 +30,7 @@ public class LuckyNumbersGeneratorFacade {
 
     public LuckyNumbersDto retriveLuckyNumbersByDate(LocalDateTime date) {
         LuckyNumbers numbersByDate = luckyNumbersRepository.findNumbersByDate(date)
-                .orElseThrow(() -> new RuntimeException("Lucky Numbers Not Found."));
+                .orElseThrow(() -> new NumbersNotFoundException("Lucky Numbers Not Found."));
         return LuckyNumbersDto.builder()
                 .luckyNumbers(numbersByDate.luckyNumbers())
                 .date(numbersByDate.date())
